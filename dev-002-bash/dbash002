@@ -17,7 +17,6 @@ for i in $(seq 1 $myArray); do
     ${myArray[@]:2}   &> /dev/null
 
     if !(($?)); then
-        ${myArray[@]:2}
         exit 0
     fi
     sleep ${myArray[1]}
