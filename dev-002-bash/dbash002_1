@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+
+temp=( "$@" )
+myArray=( ${temp[2]} ${temp[4]} ${temp[@]:5})
+
+
+for i in $(seq 1 $myArray); do
+    ${myArray[@]:2}   &> /dev/null
+
+    if !(($?)); then
+        exit 0
+    fi
+    sleep ${myArray[1]}
+done
+
+echo "error" >&2
+exit 1
