@@ -1,0 +1,27 @@
+#!/usr/bin/bash
+
+if [ "$#" -eq 0 ]; then
+    echo "command parameters are empty we use an environment variable" >&2
+    myArray=( $TRY_INTERVAL $TRY_NUMBER $TRY_COMMAND)
+else
+    temp=( "$@" )
+    myArray=( ${temp[2]} ${temp[4]} ${temp[@]:5})
+fi
+
+if [ ${#myArray} -eq 0 ]; then
+    echo "the environment variable isn't set we use default values." >&2
+    myArray=( 5 12 NULL)
+fi
+
+for i in $(seq 1 $myArray); do
+    ${myArray[@]:2}   &> /dev/null
+
+    if !(($?)); then
+        ${myArray[@]:2}
+        exit 0
+    fi
+    sleep ${myArray[1]}
+done
+
+echo "error" >&2
+exit 1
